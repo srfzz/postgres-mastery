@@ -1,0 +1,8 @@
+Terminal (psql) Commands
+>[]\l:List All the Database
+>[]\c dbname: connect to a specific Database
+>[]\dt: list all the tables of the current database  
+>[]\d tablename: Show Table Structure(columns,types,constraints)
+>[]\q:quit the psql Terminal
+>[]\dn:list all the schemas
+>[]\du:list all the roles
