@@ -1,0 +1,80 @@
+# PostgreSQL Data Types - Complete Guide
+
+## Numeric Data Types
+
+### SMALLINT
+I use this when I need to store small whole numbers ranging from -32,768 to 32,767. I choose this to save storage space when I know my values won't exceed this range, like storing ages or quantities in small batches.
+
+### INTEGER (INT)
+I use this for standard whole number storage. It ranges from about -2 billion to 2 billion. I pick this as my default choice for IDs, counts, and most numeric calculations since it's the most commonly used integer type.
+
+### BIGINT
+I use this when I need to store very large whole numbers beyond the INTEGER range, going up to about 9 quintillion. I choose this for things like large transaction amounts or astronomical measurements.
+
+### DECIMAL (NUMERIC)
+I use this for precise decimal numbers where I need exact accuracy. I pick this for financial data, prices, or any calculations where rounding errors would cause problems.
+
+### REAL
+I use this for floating-point numbers that don't need extreme precision. I choose this for scientific calculations or measurements where some rounding is acceptable.
+
+### DOUBLE PRECISION
+I use this for high-precision floating-point numbers. I pick this when I need more accuracy than REAL but don't need exact decimal precision.
+
+## Character Data Types
+
+### CHAR(n)
+I use this for fixed-length strings. I choose this when I know the exact length, like country codes or postal codes.
+
+### VARCHAR(n)
+I use this for variable-length strings with a maximum limit. I pick this for names, emails, or descriptions where length varies.
+
+### TEXT
+I use this for unlimited variable-length strings. I choose this for long content like articles, comments, or any text without a predictable length limit.
+
+## Boolean Data Type
+
+### BOOLEAN
+I use this to store true/false values. I pick this for flags, switches, or yes/no questions in my database.
+
+## Date and Time Data Types
+
+### DATE
+I use this to store only dates without time. I choose this for birthdays, event dates, or any calendar-based information.
+
+### TIME
+I use this to store only time values without dates. I pick this for working hours, time windows, or time-only information.
+
+### TIMESTAMP
+I use this to store both date and time together. I choose this for logging events, recording when actions occurred, or any timestamped information.
+
+### INTERVAL
+I use this to store durations or differences between timestamps. I pick this for storing time periods, durations, or calculating differences.
+
+## JSON Data Types
+
+### JSON
+I use this to store JSON formatted data. I choose this when I need to store semi-structured data that might have varying fields.
+
+### JSONB
+I use this for binary JSON storage. I pick this over JSON because it's faster, allows indexing, and removes duplicate keys.
+
+## UUID Data Type
+
+### UUID
+I use this to store universally unique identifiers. I choose this for generating globally unique IDs without depending on sequences.
+
+## Array Data Types
+
+### Array Types (INTEGER[], TEXT[], etc.)
+I use these to store arrays of values of a single type. I pick this when I need to store multiple related values in a single column.
+
+## Special Data Types
+
+### BYTEA
+I use this to store binary data like images or files. I choose this when I need to store raw binary content in the database.
+
+### SERIAL
+I use this for auto-incrementing integers. I pick this for creating primary keys that automatically increment.
+
+### MONEY
+I use this for currency values. I choose this for financial applications where I need currency-aware storage.

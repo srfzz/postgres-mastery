@@ -1,0 +1,72 @@
+-- INT vs SERIAL in PostgreSQL
+
+-- INT: Basic 4-byte integer type
+-- - Manual value management
+-- - No auto-increment
+-- - Range: -2,147,483,648 to 2,147,483,647
+
+CREATE TABLE users_int (
+    id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+-- You must insert values manually
+INSERT INTO users_int (id, name) VALUES (1, 'Alice');
+INSERT INTO users_int (id, name) VALUES (2, 'Bob');
+
+---
+
+-- SERIAL: Convenience type for auto-increment
+-- - Automatically creates: INT column + SEQUENCE + DEFAULT
+-- - Auto-generates unique IDs
+-- - Range: 1 to 2,147,483,647
+
+CREATE TABLE users_serial (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+-- Values auto-increment without specifying id
+INSERT INTO users_serial (name) VALUES ('Alice');
+INSERT INTO users_serial (name) VALUES ('Bob');
+
+---
+
+-- BIGSERIAL: For larger auto-increment values
+-- - Uses BIGINT (8-byte) instead of INT (4-byte)
+-- - Range: 1 to 9,223,372,036,854,775,807
+-- - Use when expecting >2 billion rows
+
+CREATE TABLE logs_bigserial (
+    id BIGSERIAL PRIMARY KEY,
+    message VARCHAR(255)
+);
+
+---
+
+-- Modern alternative: GENERATED ... AS IDENTITY
+-- - Explicit, SQL standard compliant
+-- - Recommended for new projects
+
+CREATE TABLE posts_identity (
+    id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    content TEXT
+);
+-- Production-level best practices:
+-- Use BIGSERIAL for most tables (future-proof)
+-- Use GENERATED ALWAYS AS IDENTITY for new projects (SQL standard)
+-- Avoid INT - it limits to 2.1 billion rows
+
+CREATE TABLE products (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Modern alternative (preferred for new projects)
+CREATE TABLE orders (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id BIGINT NOT NULL,
+    total DECIMAL(10, 2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
