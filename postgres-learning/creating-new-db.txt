@@ -1,0 +1,27 @@
+-- Step 1: Connect to PostgreSQL as superuser
+-- psql -U postgres
+
+-- Step 2: Create a new database
+CREATE DATABASE my_new_database;
+
+-- Step 3: List all databases to verify
+\l
+
+-- Step 4: Connect to the new database
+\c my_new_database
+
+-- Step 5: Create a table (example)
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100)
+);
+
+-- Step 6: Verify the table was created
+\dt
+
+-- Step 7: Insert sample data
+INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com');
+
+-- Step 8: Query the data
+SELECT * FROM users;
