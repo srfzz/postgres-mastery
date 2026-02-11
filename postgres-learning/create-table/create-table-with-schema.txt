@@ -1,0 +1,17 @@
+1. Schema OrganizationI created a custom schema called management instead of using the default public.
+Why? To keep business logic separate and organized.
+ In enterprise apps, we don't dump everything in one place.Verification:
+  I used \dt management.*; because the standard \dt only looks at the public schema.2.
+   The departments Table StructureSQL
+   CREATE TABLE management.departments (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    depart_name VARCHAR(100) NOT NULL UNIQUE,
+    location VARCHAR(100) DEFAULT 'REMOTE',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
+    CONSTRAINT check_depart_name_content CHECK (
+        length(depart_name) >= 2 AND depart_name ~ '^[a-zA-Z\s]+$'
+    )
+);
+3. Why I Added These 2 Manual IndexesI ran these commands specifically to handle performance for when the data grows to millions of rows:A. Location IndexCREATE INDEX idx_department_location ON management.departments(location);Purpose: To speed up searches like "Find all departments in 'REMOTE' or 'New York'."Why it's needed: Without this, the database has to do a Full Table Scan (reading every single row) just to find a specific location. With the index, it finds it instantly.B. Partial Active IndexCREATE INDEX idx_active_departents ON management.departments(id) WHERE deleted_at IS NULL;Purpose: Since I am using Soft Deletes, I will almost always query WHERE deleted_at IS NULL.Why it's needed: This index is "Partial"—it only tracks records that aren't deleted. It makes the index smaller and much faster for the application to load active departments.4. Technical Definitions (The "Why")FeatureWhy I Used ItIndexActs like a "Book Glossary." It allows the DB to jump straight to the data instead of scanning millions of rows.CONCURRENTLYI used this keyword so that the table doesn't "lock" while the index is being built. This prevents the DB from "breaking" or freezing during maintenance.B-TreeThe default algorithm for these indexes. It is very efficient for sorted data and ranges.ConstraintsThe CHECK and UNIQUE rules ensure that bad data (like a 1-letter department name or a duplicate) never gets into my system.
