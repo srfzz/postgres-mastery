@@ -1,0 +1,30 @@
+#SCHEMA
+Think of a Schema as a folder and a Table as a file inside that folder.
+In a professional environment, we don't just dump everything in the default "public" schema. we organize them.
+
+#TO CREATE SCHEMA WE USE 
+`` CREATE SCHEMA (schema_name);``
+#TO CHCEK IF SCHEMA IS CREATED WE USE THE \DN COMMND IN THE PSQL Terminal
+#TO DROP A SCHEMA WE USE 
+``DROP SCHEMA (schem_name)``
+#TO AGAIN CHCEK IF IT WORKED ON NOT LIKE ITS DELETED OR NOT WE USE 
+``\dn commnd in the terminal``
+#\dn commnd means List All Schema 
+
+
+#How to create a Table inside that Schema
+``CREATE TABLE management.users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);``
+#What this does:
+
+1.management.users: Tells Postgres exactly which "folder" to put the table in.
+
+1.SERIAL PRIMARY KEY: Automatically gives each user a unique ID (1, 2, 3...).
+
+2.VARCHAR: Standard text type (like string in Java or Laravel).
+
+3.NOT NULL: Means the field cannot be empty.
