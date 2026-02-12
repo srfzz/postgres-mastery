@@ -1,0 +1,67 @@
+-- ============================================================================
+-- OBJECT: management.project_status (ENUM TYPE)
+-- ============================================================================
+-- PURPOSE: Enumerated type that defines the valid status values for projects
+-- VALID VALUES: 'PLANNING', 'ACTIVE', 'COMPLETED', 'ONHOLD'
+-- ============================================================================
+
+-- ============================================================================
+-- OBJECT: management.projects (TABLE)
+-- ============================================================================
+-- PURPOSE: Stores information about all projects in the management system
+-- CONSTRAINTS: All projects must have a name, start date, and budget
+-- ============================================================================
+
+-- COLUMN: id
+-- TYPE: bigint
+-- DESCRIPTION: Unique identifier for each project (auto-generated primary key)
+-- CONSTRAINTS: NOT NULL, PRIMARY KEY, auto-increment
+
+-- COLUMN: project_name
+-- TYPE: varchar(150)
+-- DESCRIPTION: The name or title of the project
+-- CONSTRAINTS: NOT NULL, max 150 characters
+
+-- COLUMN: start_date
+-- TYPE: date
+-- DESCRIPTION: The date when the project begins
+-- CONSTRAINTS: NOT NULL, defaults to current date if not provided
+
+-- COLUMN: end_date
+-- TYPE: date
+-- DESCRIPTION: The date when the project is expected to be completed
+-- CONSTRAINTS: Nullable (optional field)
+
+-- COLUMN: budget
+-- TYPE: numeric(15,3)
+-- DESCRIPTION: The financial budget allocated for the project
+-- CONSTRAINTS: NOT NULL, supports up to 15 total digits with 3 decimal places
+
+-- COLUMN: status
+-- TYPE: management.project_status
+-- DESCRIPTION: Current status of the project (PLANNING, ACTIVE, COMPLETED, or ONHOLD)
+-- CONSTRAINTS: NOT NULL, defaults to 'PLANNING' if not specified
+
+-- COLUMN: created_at
+-- TYPE: timestamptz
+-- DESCRIPTION: Timestamp when the project record was created (with timezone support)
+-- CONSTRAINTS: Auto-populated with current timestamp
+
+-- COLUMN: updated_at
+-- TYPE: timestamptz
+-- DESCRIPTION: Timestamp when the project record was last modified (with timezone support)
+-- CONSTRAINTS: Auto-populated with current timestamp on creation
+create type management.project_status as enum(
+    'PLANNING','ACTIVE','COMPLETED','ONHOLD'
+);
+
+create table management.projects(
+    id bigint generated always as identity primary key,
+    project_name varchar(150) not null,
+    start_date date not null default current_date,
+    end_date date,
+    budget numeric(15,3) not null,
+    status management.project_status default 'PLANNING',
+    created_at timestamptz default current_timestamp,
+    updated_at timestamptz default current_timestamp
+);
