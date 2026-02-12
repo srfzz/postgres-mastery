@@ -1,0 +1,41 @@
+-- Create employees table to store employee records
+CREATE TABLE management.employees(
+    -- Auto-incrementing primary key for unique employee identification
+    id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    
+    -- Employee's full name, required field
+    full_name varchar(100) NOT NULL,
+    
+    -- Email address, required and must be unique (see unique index below)
+    email varchar(60) NOT NULL,
+    
+    -- Contact phone number, required field
+    phone_number varchar(20) NOT NULL,
+    
+    -- Date employee was hired, defaults to today if not provided
+    hire_date date NOT NULL DEFAULT CURRENT_DATE,
+    
+    -- Foreign key to jobs table for job classification
+    job_id bigint NOT NULL REFERENCES management.jobs(id),
+    
+    -- Foreign key to departments table for department assignment
+    depart_id bigint NOT NULL REFERENCES management.departments(id),
+    
+    -- Timestamp when record was created, auto-set to current time
+    created_at timestamptz DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Timestamp when record was last updated, auto-set to current time
+    updated_at timestamptz DEFAULT CURRENT_TIMESTAMP,
+    
+    -- Soft delete flag, NULL means not deleted
+    deleted_at timestamptz DEFAULT NULL
+);
+
+-- Ensures email uniqueness only for non-deleted employees (soft delete support)
+CREATE UNIQUE INDEX unique_email_index ON management.employees(email) WHERE deleted_at IS NULL;
+
+-- Speeds up queries filtering employees by department
+CREATE INDEX idx_employee_depart_id ON management.employees(depart_id);
+
+-- Speeds up queries filtering employees by job
+CREATE INDEX idx_employee_job_id ON management.employees(job_id);
