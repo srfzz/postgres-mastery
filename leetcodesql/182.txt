@@ -38,3 +38,4 @@ Output:
 Explanation: a@b.com is repeated two times.
 sql:
 select email from Person where id in  ( select id from Person group by email having count(*) >1 );
+select email from Person group by email having count(*) >1;
